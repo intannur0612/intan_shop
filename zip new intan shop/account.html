@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account | INTAN SHOP</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <nav class="navbar-luxury">
+      <div class="navbar-container">
+        <a href="index.html" class="logo">INTAN <span>SHOP</span></a>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html">Home</a>
+          <a href="product.html">Shop</a>
+          <a href="cart.html">Cart <span class="cart-badge">0</span></a>
+          <a href="account.html" class="active">Account</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="page-shell container">
+      <div class="page-header fade-up">
+        <h1 class="font-serif">My Account</h1>
+        <p>Kelola profil, akses keranjang, dan lihat status pembelian Anda.</p>
+      </div>
+
+      <div class="grid grid-2">
+        <section class="info-card p-6 fade-up" id="account-profile"></section>
+        <section class="info-card p-6 fade-up" id="account-actions"></section>
+      </div>
+    </main>
+
+    <script src="js/products-data.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const user = auth.getCurrentUser();
+        const profile = document.getElementById('account-profile');
+        const actions = document.getElementById('account-actions');
+
+        if (!user) {
+          profile.innerHTML = '<h3 class="font-serif mb-3">Anda belum login</h3><p class="text-gray">Silakan masuk untuk melihat akun dan riwayat belanja.</p><a href="login.html" class="btn mt-4">Login</a>';
+          actions.innerHTML = '<h3 class="font-serif mb-3">Quick Links</h3><div class="flex flex-col gap-2"><a href="product.html" class="btn-outline">Browse Collection</a><a href="cart.html" class="btn-outline">View Cart</a></div>';
+          return;
+        }
+
+        profile.innerHTML = `
+          <h3 class="font-serif mb-3">Profil Pengguna</h3>
+          <p><strong>Nama:</strong> ${user.name}</p>
+          <p><strong>Email:</strong> ${user.email}</p>
+          <p><strong>Status:</strong> ${user.email === 'admin@intanshop.com' ? 'Administrator' : 'Member Premium'}</p>
+          <a href="#" class="btn mt-4" onclick="auth.logout(); return false;">Logout</a>
+        `;
+
+        const orders = JSON.parse(localStorage.getItem('intan_all_orders') || '[]');
+        actions.innerHTML = `
+          <h3 class="font-serif mb-3">Akses Cepat</h3>
+          <div class="flex flex-col gap-2">
+            <a href="cart.html" class="btn-outline">Lihat Keranjang</a>
+            <a href="product.html" class="btn-outline">Lanjut Belanja</a>
+            ${user.email === 'admin@intanshop.com' ? '<a href="admin-dashboard.html" class="btn">Dashboard Admin</a>' : ''}
+          </div>
+          <div class="mt-4">
+            <h4 class="mb-2">Riwayat Pesanan</h4>
+            <p class="text-sm text-gray">${orders.length ? `${orders.length} transaksi tersimpan.` : 'Belum ada transaksi.'}</p>
+          </div>
+        `;
+      });
+    </script>
+  </body>
+</html>

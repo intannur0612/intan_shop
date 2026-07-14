@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded', ()=>{ if(typeof window.renderProductCatalog === 'function') window.renderProductCatalog(); });

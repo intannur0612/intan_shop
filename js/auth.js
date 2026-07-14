@@ -1,0 +1,8 @@
+const auth = {
+  getCurrentUser(){ return JSON.parse(localStorage.getItem('intan_logged_user') || 'null'); },
+  isLoggedIn(){ return !!this.getCurrentUser(); },
+  login(email, password, rememberMe = false){ const demoUser = { name:'Aurelia', email:'customer@intanshop.com', password:'intan123' }; const adminUser = { name:'Admin', email:'admin@intanshop.com', password:'admin123' }; const users=[demoUser, adminUser]; const match=users.find((user)=>user.email.toLowerCase()===email.toLowerCase() && user.password===password); if(!match){ showToast('Email atau password salah.', 'error'); return false; } localStorage.setItem('intan_logged_user', JSON.stringify(match)); if(rememberMe) localStorage.setItem('intan_remember_me', 'true'); showToast(`Selamat datang, ${match.name}.`, 'success'); return true; },
+  logout(){ localStorage.removeItem('intan_logged_user'); localStorage.removeItem('intan_remember_me'); showToast('Berhasil keluar dari sesi.', 'success'); setTimeout(()=>window.location.href='index.html', 600); }
+};
+function updateAuthNav(){ const currentUser = auth.getCurrentUser(); document.querySelectorAll('.nav-auth').forEach((link)=>link.remove()); const target = document.querySelector('.nav-links'); if(!target) return; if(!currentUser){ target.insertAdjacentHTML('beforeend', '<a href="login.html" class="nav-auth btn-outline">Login</a>'); return; } target.insertAdjacentHTML('beforeend', `<a href="account.html" class="nav-auth">Hi, ${currentUser.name.split(' ')[0]}</a><a href="#" class="nav-auth" onclick="auth.logout();return false;">Logout</a>`); }
+window.auth = auth; window.updateAuthNav = updateAuthNav;

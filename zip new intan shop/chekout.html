@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="0; url=checkout.html" />
+    <title>Redirecting...</title>
+    <style>
+      body { font-family: Arial, sans-serif; display: grid; place-items: center; min-height: 100vh; background: #f8f5ef; color: #2b1c12; }
+      a { color: #8b6b2f; text-decoration: none; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <p>Halaman ini dipindahkan. Jika tidak otomatis berpindah, <a href="checkout.html">klik di sini</a>.</p>
+  </body>
+</html>
+          <button
+            type="submit"
+            class="btn-luxury"
+            style="width: 100%; margin-top: 1rem"
+          >
+            Lanjut ke Pembayaran
+          </button>
+        </form>
+      </div>
+
+      <div class="checkout-summary-panel zoom-in">
+        <h3 class="summary-title">Ringkasan Pesanan</h3>
+        <div id="checkout-items-list"></div>
+        <div
+          class="summary-item"
+          style="
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+          "
+        >
+          <span>Total</span>
+          <span id="checkout-grand-total">Rp 0</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/products.js"></script>
+    <script src="../js/checkout.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>

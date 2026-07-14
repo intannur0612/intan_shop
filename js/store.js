@@ -1,0 +1,23 @@
+const store = {
+  cart: JSON.parse(localStorage.getItem('intan_cart') || '[]'),
+  wishlist: JSON.parse(localStorage.getItem('intan_wishlist') || '[]'),
+  currentVoucher: localStorage.getItem('intan_voucher') || null,
+  currentShipping: 25000,
+  vouchers: { INTAN10: 0.1, LUXURY20: 0.2 },
+  shippingRates: { regular: 25000, express: 50000, sameDay: 150000 }
+};
+function saveCart(cart = store.cart){ store.cart = cart; localStorage.setItem('intan_cart', JSON.stringify(store.cart)); updateCartBadges(); }
+function getCart(){ return JSON.parse(localStorage.getItem('intan_cart') || '[]'); }
+function showToast(message, type='success'){ let container=document.getElementById('toast-container'); if(!container){container=document.createElement('div'); container.id='toast-container'; container.className='toast-container'; document.body.appendChild(container);} const toast=document.createElement('div'); toast.className=`toast ${type}`; toast.innerHTML=`<strong>${message}</strong>`; container.appendChild(toast); setTimeout(()=>{toast.style.opacity='0'; toast.style.transform='translateY(-10px)'; setTimeout(()=>toast.remove(), 300);}, 2800); }
+function updateCartBadges(){ const count = getCart().reduce((sum,item)=>sum+item.quantity,0); document.querySelectorAll('.cart-badge').forEach((badge)=>{ badge.textContent = count; badge.style.display = count > 0 ? 'inline-flex' : 'none'; }); }
+function addToCart(productId, quantity = 1){ const product = PRODUCTS_DATA.find((item)=>item.id === productId); if(!product) return; const cart = getCart(); const existing = cart.find((item)=>item.id === productId); if(existing){ if(existing.quantity + quantity > product.stock){ showToast(`Stok terbatas. Hanya tersedia ${product.stock} unit.`, 'error'); return; } existing.quantity += quantity; } else { cart.push({...product, quantity}); } saveCart(cart); showToast(`${product.name} ditambahkan ke keranjang.`, 'success'); if(typeof window.renderCartPage === 'function') window.renderCartPage(); }
+function updateCartQuantity(productId, action){ const cart = getCart(); const item = cart.find((entry)=>entry.id === productId); if(!item) return; if(action==='increase'){ if(item.quantity >= item.stock){ showToast('Stok maksimal tercapai.', 'error'); return; } item.quantity += 1; } else if(action==='decrease'){ item.quantity -= 1; if(item.quantity <=0){ const index=cart.findIndex((entry)=>entry.id===productId); cart.splice(index,1); } } saveCart(cart); if(typeof window.renderCartPage === 'function') window.renderCartPage(); }
+function removeFromCart(productId){ const cart = getCart().filter((item)=>item.id !== productId); saveCart(cart); showToast('Produk dihapus dari keranjang.', 'success'); if(typeof window.renderCartPage === 'function') window.renderCartPage(); }
+function clearCart(){ saveCart([]); showToast('Keranjang berhasil dikosongkan.', 'success'); }
+function getCartSubtotal(){ return getCart().reduce((sum,item)=>sum + item.price * item.quantity, 0); }
+function getDiscountAmount(){ const voucher = store.currentVoucher; if(!voucher) return 0; const rate = store.vouchers[voucher] || 0; return getCartSubtotal() * rate; }
+function getGrandTotal(){ return getCartSubtotal() - getDiscountAmount() + store.currentShipping; }
+function applyVoucher(code){ const normalized = (code || '').trim().toUpperCase(); if(store.vouchers[normalized]){ store.currentVoucher = normalized; localStorage.setItem('intan_voucher', normalized); showToast(`Voucher ${normalized} berhasil diterapkan.`, 'success'); return true; } store.currentVoucher = null; localStorage.removeItem('intan_voucher'); showToast('Voucher tidak valid.', 'error'); return false; }
+function toggleWishlist(productId){ const active = store.wishlist.includes(productId); if(active){ store.wishlist = store.wishlist.filter((item)=>item !== productId); showToast('Dihapus dari wishlist.', 'success'); } else { store.wishlist.push(productId); showToast('Ditambahkan ke wishlist.', 'success'); } localStorage.setItem('intan_wishlist', JSON.stringify(store.wishlist)); if(typeof window.renderProductCatalog === 'function') window.renderProductCatalog(); if(typeof window.renderWishlistPage === 'function') window.renderWishlistPage(); }
+function getWishlistProducts(){ return store.wishlist.map((id)=>PRODUCTS_DATA.find((product)=>product.id===id)).filter(Boolean); }
+window.addToCart = addToCart; window.updateCartQuantity = updateCartQuantity; window.removeFromCart = removeFromCart; window.clearCart = clearCart; window.applyVoucher = applyVoucher; window.toggleWishlist = toggleWishlist; window.getCart = getCart; window.getCartSubtotal = getCartSubtotal; window.getGrandTotal = getGrandTotal; window.showToast = showToast; window.getWishlistProducts = getWishlistProducts;

@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>INTAN SHOP | Luxury Jewelry & Fashion</title>
+    <meta
+      name="description"
+      content="INTAN SHOP adalah destinasi e-commerce premium untuk perhiasan, jam tangan, tas luxury, dan aksesoris eksklusif."
+    />
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/pages.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <style>
+      /* Efek buram transparan jika produk habis */
+      .product-card-custom.sold-out {
+        opacity: 0.55;
+        position: relative;
+      }
+
+      /* Badge merah bertuliskan HABIS / OUT OF STOCK */
+      .badge-sold-out {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: #d9534f;
+        color: white;
+        padding: 5px 10px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 3px;
+        z-index: 10;
+      }
+
+      /* Wadah tombol tambah kurang stok */
+      .stock-manager-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 15px;
+        padding: 8px 12px;
+        background: #fcfaf2;
+        border: 1px solid #eae5d8;
+        border-radius: 4px;
+      }
+
+      .stock-display-num {
+        font-weight: bold;
+        font-size: 1rem;
+        color: #111;
+      }
+
+      .btn-stock-action {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 2px 10px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+        border-radius: 3px;
+      }
+
+      .btn-stock-action:hover:not(:disabled) {
+        background: #111;
+        color: #fff;
+        border-color: #111;
+      }
+
+      .btn-stock-action:disabled {
+        background: #f0f0f0;
+        color: #aaa;
+        cursor: not-allowed;
+        border-color: #ddd;
+      }
+
+      /* Merapikan posisi selector bahasa di navbar */
+      .lang-select-nav {
+        background: transparent;
+        border: 1px solid #eae5d8;
+        color: #fff;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      .lang-select-nav option {
+        background: #111;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="splash-screen" class="loading-screen">
+      <div class="text-center">
+        <div class="splash-logo">INTAN SHOP</div>
+        <div class="progress-line"><span></span></div>
+      </div>
+    </div>
+    <nav class="navbar-luxury">
+      <div class="navbar-container">
+        <a href="index.html" class="logo">INTAN <span>SHOP</span></a>
+        <div class="hamburger" id="hamburger-menu">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="nav-links" id="nav-links">
+          <a
+            href="index.html"
+            class="active"
+            data-lang-id="nav-home"
+            data-lang-en="Home"
+            >Home</a
+          >
+          <a href="product.html" data-lang-id="nav-shop" data-lang-en="Shop"
+            >Shop</a
+          >
+          <a
+            href="wishlist.html"
+            data-lang-id="nav-wishlist"
+            data-lang-en="Wishlist"
+            >Wishlist</a
+          >
+          <a href="about.html" data-lang-id="nav-about" data-lang-en="About"
+            >About</a
+          >
+          <a
+            href="contact.html"
+            data-lang-id="nav-contact"
+            data-lang-en="Contact"
+            >Contact</a
+          >
+          <a
+            href="business-overview.html"
+            data-lang-id="nav-business"
+            data-lang-en="Business"
+            >Business Overview</a
+          >
+          <a href="cart.html" data-lang-id="nav-cart" data-lang-en="Cart"
+            >Cart <span class="cart-badge">0</span></a
+          >
+          <a
+            href="account.html"
+            data-lang-id="nav-account"
+            data-lang-en="Account"
+            >Account</a
+          >
+
+          <select id="nav-lang-switcher" class="lang-select-nav">
+            <option value="id">ID</option>
+            <option value="en">EN</option>
+          </select>
+
+          <a href="admin-dashboard.html" class="nav-auth btn-outline">Admin</a>
+        </div>
+      </div>
+    </nav>
+    <header class="hero">
+      <img
+        src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1600&q=80"
+        alt="Luxury jewelry hero"
+      />
+      <div class="hero-content">
+        <span
+          class="hero-pill"
+          id="hero-pill-text"
+          data-lang-id="Luxury Jewelry & Fashion Collection"
+          data-lang-en="Luxury Jewelry & Fashion Collection"
+          >Luxury Jewelry & Fashion Collection</span
+        >
+        <h1
+          class="font-serif text-5xl text-white mb-4"
+          id="hero-title"
+          data-lang-id="Shine Beyond Luxury"
+          data-lang-en="Shine Beyond Luxury"
+        >
+          Shine Beyond Luxury
+        </h1>
+        <p
+          class="text-cream text-lg mb-6"
+          id="hero-desc"
+          data-lang-id="Temukan koleksi berlian, emas, jam tangan, tas premium, dan aksesoris eksklusif yang dirancang untuk penampilan tak terlupakan."
+          data-lang-en="Discover exclusive collections of diamonds, gold, luxury watches, premium bags, and accessories designed for an unforgettable look."
+        >
+          Temukan koleksi berlian, emas, jam tangan, tas premium, dan aksesoris
+          eksklusif yang dirancang untuk penampilan tak terlupakan.
+        </p>
+        <div class="flex justify-center gap-4 flex-wrap">
+          <a
+            href="product.html"
+            class="btn"
+            id="btn-explore"
+            data-lang-id="Explore Collection"
+            data-lang-en="Explore Collection"
+            >Explore Collection</a
+          >
+          <a
+            href="about.html"
+            class="btn-secondary"
+            id="btn-discover"
+            data-lang-id="Discover Brand"
+            data-lang-en="Discover Brand"
+            >Discover Brand</a
+          >
+        </div>
+        <div class="hero-stats">
+          <div class="stat">✨ 100% Authentic</div>
+          <div class="stat">📦 Express Delivery</div>
+          <div class="stat">💎 Exclusive Limited Edition</div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="section container">
+        <div class="section-heading fade-up">
+          <div>
+            <div
+              class="eyebrow"
+              id="eyebrow-products"
+              data-lang-id="Curated Essentials"
+              data-lang-en="Curated Essentials"
+            >
+              Curated Essentials
+            </div>
+            <h2
+              class="font-serif"
+              id="title-products"
+              data-lang-id="Signature Collection"
+              data-lang-en="Signature Collection"
+            >
+              Signature Collection
+            </h2>
+          </div>
+          <a
+            href="product.html"
+            class="btn-outline"
+            id="btn-view-all"
+            data-lang-id="View All Products"
+            data-lang-en="View All Products"
+            >View All Products</a
+          >
+        </div>
+        <div id="home-product-grid" class="grid grid-4"></div>
+      </section>
+      <section class="section bg-cream">
+        <div class="container">
+          <div class="section-heading fade-up">
+            <div>
+              <div
+                class="eyebrow"
+                id="why-eyebrow"
+                data-lang-id="Why choose INTAN SHOP"
+                data-lang-en="Why choose INTAN SHOP"
+              >
+                Why choose INTAN SHOP
+              </div>
+              <h2
+                class="font-serif"
+                id="why-title"
+                data-lang-id="Luxury experience crafted for you"
+                data-lang-en="Luxury experience crafted for you"
+              >
+                Luxury experience crafted for you
+              </h2>
+            </div>
+          </div>
+          <div class="grid grid-3">
+            <div class="info-card p-4 fade-up">
+              <h3
+                class="font-serif mb-2"
+                data-lang-id="Certified Craftsmanship"
+                data-lang-en="Certified Craftsmanship"
+              >
+                Certified Craftsmanship
+              </h3>
+              <p
+                class="text-gray"
+                data-lang-id="Setiap desain dipilih dari para perajin premium dan disertifikasi kualitas internasional."
+                data-lang-en="Every design is selected from premium craftsmen and certified with international quality standards."
+              >
+                Setiap desain dipilih dari para perajin premium dan
+                disertifikasi kualitas internasional.
+              </p>
+            </div>
+            <div class="info-card p-4 fade-up">
+              <h3
+                class="font-serif mb-2"
+                data-lang-id="Private Consultation"
+                data-lang-en="Private Consultation"
+              >
+                Private Consultation
+              </h3>
+              <p
+                class="text-gray"
+                data-lang-id="Dapatkan rekomendasi produk sesuai kebutuhan acara, gaya, dan preferensi personal Anda."
+                data-lang-en="Get tailored product recommendations for your special event, personal style, and unique preferences."
+              >
+                Dapatkan rekomendasi produk sesuai kebutuhan acara, gaya, dan
+                preferensi personal Anda.
+              </p>
+            </div>
+            <div class="info-card p-4 fade-up">
+              <h3
+                class="font-serif mb-2"
+                data-lang-id="Secure Checkout"
+                data-lang-en="Secure Checkout"
+              >
+                Secure Checkout
+              </h3>
+              <p
+                class="text-gray"
+                data-lang-id="Sistem checkout aman dengan simulasi pembayaran bank, QRIS, e-wallet, dan COD."
+                data-lang-en="Secure checkout system with bank payment simulation, QRIS, e-wallet, and Cash on Delivery (COD)."
+              >
+                Sistem checkout aman dengan simulasi pembayaran bank, QRIS,
+                e-wallet, dan COD.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section container">
+        <div class="section-heading fade-up">
+          <div>
+            <div class="eyebrow">Testimonials</div>
+            <h2
+              class="font-serif"
+              data-lang-id="What our clients say"
+              data-lang-en="What our clients say"
+            >
+              What our clients say
+            </h2>
+          </div>
+        </div>
+        <div class="grid grid-3">
+          <div class="info-card p-4 fade-up">
+            <p
+              data-lang-id="“Produk mewah dan pengiriman premium. Saya sangat puas dengan detail kemasannya.”"
+              data-lang-en="“Luxury items and premium shipment. I am highly satisfied with the packaging details.”"
+            >
+              “Produk mewah dan pengiriman premium. Saya sangat puas dengan
+              detail kemasannya.”
+            </p>
+            <div class="mt-3 font-semibold">Ariana W.</div>
+          </div>
+          <div class="info-card p-4 fade-up">
+            <p
+              data-lang-id="“Koleksi luxury-nya sangat elegan dan cocok untuk momen khusus.”"
+              data-lang-en="“The luxury collection is incredibly elegant and fits perfectly for special moments.”"
+            >
+              “Koleksi luxury-nya sangat elegan dan cocok untuk momen khusus.”
+            </p>
+            <div class="mt-3 font-semibold">Rafael H.</div>
+          </div>
+          <div class="info-card p-4 fade-up">
+            <p
+              data-lang-id="“Website terasa premium dan checkout-nya sangat smooth. Sangat recommend.”"
+              data-lang-en="“The website feels ultra-premium and checkout runs smoothly. Highly recommended.”"
+            >
+              “Website terasa premium dan checkout-nya sangat smooth. Sangat
+              recommend.”
+            </p>
+            <div class="mt-3 font-semibold">Mira L.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="container grid">
+        <div>
+          <div class="logo mb-3">INTAN <span>SHOP</span></div>
+          <p class="text-sm text-gray">
+            Luxury jewelry, fashion pieces, and premium accessories curated for
+            your statement.
+          </p>
+        </div>
+        <div>
+          <h4 class="mb-3">Quick Link</h4>
+          <div class="flex flex-col gap-2">
+            <a href="product.html">Shop</a><a href="about.html">About</a
+            ><a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="mb-3">Customer Service</h4>
+          <div class="flex flex-col gap-2">
+            <a href="#">FAQ</a><a href="#">Shipping</a><a href="#">Returns</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="mb-3">Newsletter</h4>
+          <input id="newsletter-email" placeholder="Email Anda" /><button
+            id="newsletter-button"
+            class="btn mt-3"
+          >
+            Subscribe
+          </button>
+        </div>
+      </div>
+      <div class="container mt-8 text-sm text-gray">
+        © <span id="copyright-year"></span> INTAN SHOP. All rights reserved.
+      </div>
+    </footer>
+
+    <script src="assets/js/products-data.js"></script>
+    <script src="assets/js/store.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/app.js"></script>
+
+    <script>
+      // 1. DATA MASTER PRODUK (Simulasi Data Lokal Toko Anda)
+      let luxuryProducts = [
+        {
+          id: 101,
+          name_id: "Cincin Berlian Klasik",
+          name_en: "Classic Diamond Ring",
+          price: 15000000,
+          stock: 3,
+          img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=500&q=80",
+        },
+        {
+          id: 102,
+          name_id: "Jam Tangan Chrono Gold",
+          name_en: "Chrono Gold Luxury Watch",
+          price: 42000000,
+          stock: 1,
+          img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=500&q=80",
+        },
+        {
+          id: 103,
+          name_id: "Tas Kulit Premium Noir",
+          name_en: "Noir Premium Leather Bag",
+          price: 28500000,
+          stock: 0,
+          img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80",
+        },
+        {
+          id: 104,
+          name_id: "Kalung Emas 18k Rose",
+          name_en: "18k Rose Gold Necklace",
+          price: 12000000,
+          stock: 4,
+          img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=500&q=80",
+        },
+      ];
+
+      const textDictionary = {
+        id: {
+          outOfStock: "Habis",
+          addStock: "Tambah",
+          reduceStock: "Kurang",
+          stockText: "Stok: ",
+        },
+        en: {
+          outOfStock: "Out of Stock",
+          addStock: "Add",
+          reduceStock: "Reduce",
+          stockText: "Stock: ",
+        },
+      };
+
+      let activeLanguage = localStorage.getItem("shopLanguage") || "id";
+
+      // 2. FUNGSI UNTUK MERENDER KATALOG PRODUK KE GRID
+      function renderLuxuryGrid() {
+        const gridContainer = document.getElementById("home-product-grid");
+        if (!gridContainer) return;
+
+        gridContainer.innerHTML = ""; // Kosongkan grid
+
+        luxuryProducts.forEach((prod) => {
+          const isSoldOut = prod.stock === 0;
+          const displayTitle =
+            activeLanguage === "id" ? prod.name_id : prod.name_en;
+
+          const card = document.createElement("div");
+          // Pasang class .sold-out jika stok nol agar CSS buram bekerja
+          card.className = `info-card product-card-custom ${isSoldOut ? "sold-out" : ""}`;
+
+          card.innerHTML = `
+            ${isSoldOut ? `<span class="badge-sold-out">${textDictionary[activeLanguage].outOfStock}</span>` : ""}
+            <img src="${prod.img}" alt="${displayTitle}" style="width:100%; height:200px; object-fit:cover; border-radius:4px; margin-bottom:12px;">
+            <h3 class="font-serif mb-1" style="font-size:1.2rem;">${displayTitle}</h3>
+            <p class="text-gold font-semibold">Rp ${prod.price.toLocaleString("id-ID")}</p>
+            
+            <div class="stock-manager-controls">
+              <span class="stock-display-num">${textDictionary[activeLanguage].stockText} ${prod.stock}</span>
+              <div>
+                <button class="btn-stock-action" onclick="adjustProductStock(${prod.id}, 'reduce')" ${isSoldOut ? "disabled" : ""}>
+                  ${textDictionary[activeLanguage].reduceStock}
+                </button>
+                <button class="btn-stock-action" onclick="adjustProductStock(${prod.id}, 'add')">
+                  ${textDictionary[activeLanguage].addStock}
+                </button>
+              </div>
+            </div>
+          `;
+          gridContainer.appendChild(card);
+        });
+      }
+
+      // 3. FUNGSI UPDATE ANGKA STOK
+      function adjustProductStock(id, action) {
+        const selectedProd = luxuryProducts.find((p) => p.id === id);
+        if (selectedProd) {
+          if (action === "add") {
+            selectedProd.stock += 1;
+          } else if (action === "reduce" && selectedProd.stock > 0) {
+            selectedProd.stock -= 1;
+          }
+          renderLuxuryGrid(); // Render ulang agar status langsung berubah di layar
+        }
+      }
+
+      // 4. FUNGSI GANTI BAHASA PADA HALAMAN WEB (ID / EN)
+      function applyLanguageChange(lang) {
+        activeLanguage = lang;
+        localStorage.setItem("shopLanguage", lang);
+
+        // Cari dan ubah semua teks statis yang memiliki atribut data-lang-
+        document.querySelectorAll("[data-lang-id]").forEach((el) => {
+          const textId = el.getAttribute("data-lang-id");
+          const textEn = el.getAttribute("data-lang-en");
+          el.textContent = lang === "id" ? textId : textEn;
+        });
+
+        // Terjemahkan juga placeholder input email di footer
+        const emailInput = document.getElementById("newsletter-email");
+        if (emailInput) {
+          emailInput.placeholder = lang === "id" ? "Email Anda" : "Your Email";
+        }
+
+        renderLuxuryGrid(); // Perbarui bahasa teks di grid produk
+      }
+
+      // Event listener saat dropdown bahasa diubah
+      document
+        .getElementById("nav-lang-switcher")
+        .addEventListener("change", (e) => {
+          applyLanguageChange(e.target.value);
+        });
+
+      // Jalankan sistem saat pertama kali website diakses
+      document.getElementById("nav-lang-switcher").value = activeLanguage;
+      applyLanguageChange(activeLanguage);
+    </script>
+  </body>
+</html>

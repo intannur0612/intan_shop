@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded', ()=>{ if(typeof window.renderCartPage === 'function') window.renderCartPage(); });

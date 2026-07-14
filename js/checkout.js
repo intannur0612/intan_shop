@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded', ()=>{ if(typeof window.initCheckoutPage === 'function') window.initCheckoutPage(); });
